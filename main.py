@@ -1,4 +1,5 @@
 import tkinter as tk
+import playsound as ps
 morse = {'a': '.- ', 'b': '-... ', 'c': '-.-. ', 'd': '-.. ', 'e': '. ', 'f': '..-. ', 'g': '--. ', 'h': '.... ',
          'i': '.. ', 'j': '.--- ', 'k': '-.- ', 'l': '.-.. ', 'm': '-- ', 'n': '-. ', 'o': '--- ', 'p': '.--. ',
          'q': '--.- ', 'r': '.-. ', 's': '... ', 't': '- ', 'u': '..- ', 'v': '...- ', 'w': '.-- ', 'x': '-..- ',
@@ -7,7 +8,6 @@ morse = {'a': '.- ', 'b': '-... ', 'c': '-.-. ', 'd': '-.. ', 'e': '. ', 'f': '.
          '4': '....- ', '5': '..... ', '6': '-.... ', '7': '--... ', '8': '---.. ', '9': '----. ', '0': '----- ',
          ' ': '/ '}
 alphabet = dict((v, k) for k, v in morse.items())
-
 
 def translate():
     output_text.delete("1.0", tk.END)
@@ -28,6 +28,16 @@ def translate():
 def clear_text():
     input_text.delete("1.0", tk.END)
 
+
+def play():
+    if ord(output_text.get("0.0", )) == 45 or ord(output_text.get("0.0")) == 46:
+        text = output_text.get("1.0", 'end-1c')
+        for c in text:
+            if c == ".":
+                ps.playsound("dot.wav")
+            elif c == "-":
+                ps.playsound("dash.wav")
+
 main_window = tk.Tk()
 main_window.title("Morse alphabet converter")
 input_label = tk.Label(main_window, text="Input text")
@@ -44,4 +54,6 @@ output_label.grid(row=3, columnspan=2)
 output_text.grid(row=4, columnspan=2)
 input_text.insert("end", 'Type your message here, either normal letters and numbers or Morse code using \'.\' for a dot'
                          ','' \'-\' for a dash, separating letters by spaces and words by \'/\' (with space)')
+play_morse = tk.Button(main_window, text="Listen to Morse", command=play)
+play_morse.grid(row=5, column=1, sticky=tk.E)
 main_window.mainloop()
